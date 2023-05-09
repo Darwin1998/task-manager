@@ -38,6 +38,21 @@ class SkillController extends Controller
         return $this->successResponse($skill,'Skill Created', 201);
     }
 
+    public function update(Request $request, Skill $skill)
+    {
+        $validator = $this->validateUser();
+        if($validator->fails()){
+            return $this->errorResponse($validator->messages(), 422);
+        }
+
+        $skill = Skill::findOrFail($skill);
+        $skill->name = $request->get('name');
+        $skill->slug = $request->get('slug');
+        $skill->save();
+
+        return $this->successResponse($skill,'Skill Updated', 200);
+    }
+
     public function show(Skill $skill)
     {
         // return $this->successResponse(new SkillResource($skill));
